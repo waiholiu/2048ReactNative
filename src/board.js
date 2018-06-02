@@ -22,7 +22,6 @@ class Board extends Component {
             }>
                 {rowsOfCells.map((row, i) => {
 
-                    console.log(row.find(r => r.x == 0));
                     return (
                         <View key={i} style={{ flexDirection: 'row' }}>
                         <Cell key='0' text={row.find(r => r.x == 0).value}/>
