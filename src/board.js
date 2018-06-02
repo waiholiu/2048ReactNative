@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import Cell from './cell'
 
 class Board extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            boardValues: [[0, 2, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
-        }
     }
 
     render() {
@@ -16,7 +13,7 @@ class Board extends Component {
             <View style={
                 styles.board
             }>
-                {this.state.boardValues.map((row, i) => {
+                {this.props.boardValues.map((row, i) => {
                     console.log('row' + row);
                     return (
                         <View key={i} style={{ flexDirection: 'row' }}>
