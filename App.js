@@ -9,7 +9,24 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        boardValues: [[0, 2, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+        boardValues: [
+          {x: 0, y: 0, value :0},
+          {x: 1, y: 0, value :0},
+          {x: 2, y: 0, value :0},
+          {x: 3, y: 0, value :2},
+          {x: 0, y: 1, value :0},
+          {x: 1, y: 1, value :0},
+          {x: 2, y: 1, value :0},
+          {x: 3, y: 1, value :0},
+          {x: 0, y: 2, value :0},
+          {x: 1, y: 2, value :0},
+          {x: 2, y: 2, value :0},
+          {x: 3, y: 2, value :0},
+          {x: 0, y: 3, value :0},
+          {x: 1, y: 3, value :0},
+          {x: 2, y: 3, value :0},
+          {x: 3, y: 3, value :0}          
+         ]
     }
 }
 

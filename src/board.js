@@ -9,32 +9,26 @@ class Board extends Component {
     }
 
     render() {
+
+        let rowsOfCells = [];
+        for(let y = 0; y < 4; y++)
+        {
+            rowsOfCells[y] = this.props.boardValues.filter(c => c.y == y);
+        }
+
         return (
             <View style={
                 styles.board
             }>
-                {this.props.boardValues.map((row, i) => {
-                    console.log('row' + row);
+                {rowsOfCells.map((row, i) => {
+
+                    console.log(row.find(r => r.x == 0));
                     return (
                         <View key={i} style={{ flexDirection: 'row' }}>
-
-                            {/* to do not sure why the map thing doesn't work */}
-                            <Cell key='0' text={row[0]}/>
-                            <Cell key='1' text={row[1]}/>
-                            <Cell key='2' text={row[2]}/>
-                            <Cell key='3' text={row[3]}/>
-                            {/* {
-                                row.map((cell, j) => {
-                                    console.log('cell' + cell);
-                                    return
-                                    (
-                                        // <Cell text={cell} key={j} />
-                                        <Text key={j}>d</Text>
-
-                                    )
-
-                                })
-                            } */}
+                        <Cell key='0' text={row.find(r => r.x == 0).value}/>
+                           <Cell key='1' text={row.find(r => r.x == 1).value}/>
+                           <Cell key='2' text={row.find(r => r.x == 2).value}/>
+                           <Cell key='3' text={row.find(r => r.x == 3).value}/>
                         </View>
                     )
 
