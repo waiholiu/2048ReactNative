@@ -14,9 +14,8 @@ class Cell extends Component {
                 borderWidth:0.5,  
                 width:60,
                 height:60
-                
               }} >
-                <Text> {this.props.text}</Text>
+                {this.props.text != 0 ? <Text style={{textAlign:"center"}}> {this.props.text}</Text> : null}
             </View>
         );
     }

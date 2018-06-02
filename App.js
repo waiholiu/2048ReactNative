@@ -1,16 +1,39 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Board from './src/board';
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-
+      <GestureRecognizer
+        onSwipe={(direction, state) => this.onSwipe(direction, state)}
+        style={styles.container}>
         <Board />
-      </View>
+
+      </GestureRecognizer>
     );
+  }
+
+  onSwipe(gestureName, gestureState) {
+    console.log('swipe');
+    const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
+    this.setState({ gestureName: gestureName });
+    switch (gestureName) {
+      case SWIPE_UP:
+        this.setState({ backgroundColor: 'red' });
+        break;
+        case SWIPE_DOWN:
+          this.setState({backgroundColor: 'green'});
+          break;
+      case SWIPE_LEFT:
+        this.setState({ backgroundColor: 'blue' });
+        break;
+      case SWIPE_RIGHT:
+        this.setState({ backgroundColor: 'yellow' });
+        break;
+    }
   }
 }
 
