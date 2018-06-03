@@ -11,8 +11,7 @@ class Board extends Component {
     render() {
 
         let rowsOfCells = [];
-        for(let y = 0; y < 4; y++)
-        {
+        for (let y = 0; y < 4; y++) {
             rowsOfCells[y] = this.props.boardValues.filter(c => c.y == y);
         }
 
@@ -24,10 +23,10 @@ class Board extends Component {
 
                     return (
                         <View key={i} style={{ flexDirection: 'row' }}>
-                        <Cell key='0' text={row.find(r => r.x == 0).value}/>
-                           <Cell key='1' text={row.find(r => r.x == 1).value}/>
-                           <Cell key='2' text={row.find(r => r.x == 2).value}/>
-                           <Cell key='3' text={row.find(r => r.x == 3).value}/>
+                            <Cell key='0' text={row.find(r => r.x == 0).value} />
+                            <Cell key='1' text={row.find(r => r.x == 1).value} />
+                            <Cell key='2' text={row.find(r => r.x == 2).value} />
+                            <Cell key='3' text={row.find(r => r.x == 3).value} />
                         </View>
                     )
 

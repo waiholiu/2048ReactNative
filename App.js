@@ -17,15 +17,15 @@ export default class App extends React.Component {
           {x: 0, y: 1, value :0},
           {x: 1, y: 1, value :0},
           {x: 2, y: 1, value :0},
-          {x: 3, y: 1, value :0},
+          {x: 3, y: 1, value :4},
           {x: 0, y: 2, value :0},
-          {x: 1, y: 2, value :0},
+          {x: 1, y: 2, value :4},
           {x: 2, y: 2, value :0},
           {x: 3, y: 2, value :0},
-          {x: 0, y: 3, value :0},
+          {x: 0, y: 3, value :4},
           {x: 1, y: 3, value :0},
           {x: 2, y: 3, value :0},
-          {x: 3, y: 3, value :0}          
+          {x: 3, y: 3, value :2}          
          ]
     }
 }
@@ -55,10 +55,11 @@ export default class App extends React.Component {
 
   onSwipe(gestureName, gestureState) {
     const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
+    console.log('swipe');
     this.setState({ gestureName: gestureName });
     switch (gestureName) {
       case SWIPE_UP:
-        this.setState({ backgroundColor: 'red' });
+        this.swipeUp();
         break;
       case SWIPE_DOWN:
         this.setState({ backgroundColor: 'green' });
@@ -70,6 +71,39 @@ export default class App extends React.Component {
         this.setState({ backgroundColor: 'yellow' });
         break;
     }
+  }
+
+  swipeUp(){ 
+    // get the 4 groups of cells
+    let groupsOfCells = [];
+    for (let x = 0; x < 4; x++) {
+      groupsOfCells[x] = this.state.boardValues.filter(c => c.x == x);
+    }
+
+    groupsOfCells.forEach(group => {
+      // find all the zeros and remove them
+      let sortedCells = group.filter(cell => cell.value != 0).sort((a,b) => a.y - b.y)
+      let sortedValues = sortedCells.map((cell) => cell.value);
+    
+      // fill out the request
+      for(let i = 0; i < 4; i++)
+      {
+        if(sortedValues[i])
+        {
+          group[i].value = sortedValues[i]
+        } 
+        else
+        {
+          group[i].value = 0;
+        }
+
+      }
+
+
+    });
+
+    console.log(this.state.boardValues);
+
   }
 }
 
