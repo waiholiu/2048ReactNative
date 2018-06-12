@@ -13,8 +13,10 @@ export default class App extends React.Component {
         { x: 0, y: 0, value: 0 },
         { x: 1, y: 0, value: 0 },
         { x: 2, y: 0, value: 0 },
-        { x: 3, y: 0, value: 2 },
-        { x: 0, y: 1, value: 0 },
+        {
+          x: 3, y: 0, value: 2
+        },
+        { x: 0, y: 1, value: 2 },
         { x: 1, y: 1, value: 0 },
         { x: 2, y: 1, value: 0 },
         { x: 3, y: 1, value: 4 },
@@ -27,7 +29,7 @@ export default class App extends React.Component {
         { x: 2, y: 3, value: 0 },
         { x: 3, y: 3, value: 2 }
       ]
-    }
+    };
   }
 
 
@@ -50,15 +52,17 @@ export default class App extends React.Component {
   }
 
   onPressStart() {
-    let base = this;
-    console.log('hello');
-    base.setState({
+    this.resetBoard();
+  }
+
+  resetBoard() {
+    this.setState({
       boardValues: [
         { x: 0, y: 0, value: 0 },
         { x: 1, y: 0, value: 0 },
         { x: 2, y: 0, value: 0 },
         { x: 3, y: 0, value: 2 },
-        { x: 0, y: 1, value: 0 },
+        { x: 0, y: 1, value: 2 },
         { x: 1, y: 1, value: 0 },
         { x: 2, y: 1, value: 0 },
         { x: 3, y: 1, value: 4 },
@@ -76,53 +80,69 @@ export default class App extends React.Component {
 
   onSwipe(gestureName, gestureState) {
     const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
-    console.log('swipe');
+    console.log('swipe2');
     this.setState({ gestureName: gestureName });
     switch (gestureName) {
       case SWIPE_UP:
-        this.swipeUp();
+        this.makeMove("y", "negative");
         break;
       case SWIPE_DOWN:
-        this.setState({ backgroundColor: 'green' });
+        this.makeMove("y", "positive");
         break;
       case SWIPE_LEFT:
-        this.setState({ backgroundColor: 'blue' });
+        this.makeMove("x", "negative");
         break;
       case SWIPE_RIGHT:
-        this.setState({ backgroundColor: 'yellow' });
+        this.makeMove("x", "positive");
         break;
     }
   }
 
-  swipeUp() {
-    // get the 4 groups of cells
+  makeMove(axis, direction) {
     let groupsOfCells = [];
-    for (let x = 0; x < 4; x++) {
-      groupsOfCells[x] = this.state.boardValues.filter(c => c.x == x);
+    for (let j = 0; j < 4; j++) {
+      if (axis == "y") {
+        groupsOfCells[j] = this.state.boardValues.filter(c => c.x == j);
+      }
+      else {
+        groupsOfCells[j] = this.state.boardValues.filter(c => c.y == j);
+      }
     }
 
+
     groupsOfCells.forEach(group => {
-      // find all the zeros and remove them
-      let sortedCells = group.filter(cell => cell.value != 0).sort((a, b) => a.y - b.y)
-      let sortedValues = sortedCells.map((cell) => cell.value);
+
+      let sortFunction = function (a, b) {
+
+        let sortOrder = direction == "positive" ? 1 : -1;
+        if (a.value == 0)
+          return -1 * sortOrder;
+        if (b.value == 0)
+          return 1 * sortOrder;
+        if (axis == "x")
+          return (a.x - b.x);
+        else
+          return (a.y - b.y);
+
+      }
+
+      let sortedCells = group.sort((a, b) => sortFunction(a, b));
 
 
-      // fill out the request
+
       for (let i = 0; i < 4; i++) {
-        if (sortedValues[i]) {
-          group[i].value = sortedValues[i]
-        }
-        else {
-          group[i].value = 0;
-        }
+        if (axis == "y")
+          sortedCells[i].y = i;
+        else
+          sortedCells[i].x = i;
 
       }
 
 
+
     });
 
-    console.log(this.state.boardValues);
-
+    this.setState({ boardValues: this.state.boardValues });
   }
 }
 
