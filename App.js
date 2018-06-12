@@ -99,6 +99,8 @@ export default class App extends React.Component {
   }
 
   makeMove(axis, direction) {
+
+    // make sure groups of cells is all in order
     let groupsOfCells = [];
     for (let j = 0; j < 4; j++) {
       if (axis == "y") {
@@ -107,13 +109,18 @@ export default class App extends React.Component {
       else {
         groupsOfCells[j] = this.state.boardValues.filter(c => c.y == j);
       }
+
+      if(direction == "negative")
+      {
+        groupsOfCells[j] = groupsOfCells[j].reverse();
+      }
     }
 
 
     groupsOfCells.forEach(group => {
 
       let sortFunction = function (a, b) {
-
+        
         let sortOrder = direction == "positive" ? 1 : -1;
         if (a.value == 0)
           return -1 * sortOrder;
@@ -131,6 +138,7 @@ export default class App extends React.Component {
 
 
       for (let i = 0; i < 4; i++) {
+        sortedCells[i].sortOrder = i;
         if (axis == "y")
           sortedCells[i].y = i;
         else
@@ -144,6 +152,57 @@ export default class App extends React.Component {
 
     this.setState({ boardValues: this.state.boardValues });
   }
+
+
+  // makeMove(axis, direction) {
+  //   let groupsOfCells = [];
+  //   for (let j = 0; j < 4; j++) {
+  //     if (axis == "y") {
+  //       groupsOfCells[j] = this.state.boardValues.filter(c => c.x == j);
+  //     }
+  //     else {
+  //       groupsOfCells[j] = this.state.boardValues.filter(c => c.y == j);
+  //     }
+
+  //     groupsOfCells[j].sortOrder = j;
+  //   }
+
+
+  //   groupsOfCells.forEach(group => {
+
+  //     let sortFunction = function (a, b) {
+        
+  //       let sortOrder = direction == "positive" ? 1 : -1;
+  //       if (a.value == 0)
+  //         return -1 * sortOrder;
+  //       if (b.value == 0)
+  //         return 1 * sortOrder;
+  //       if (axis == "x")
+  //         return (a.x - b.x);
+  //       else
+  //         return (a.y - b.y);
+
+  //     }
+
+  //     let sortedCells = group.sort((a, b) => sortFunction(a, b));
+
+
+
+  //     for (let i = 0; i < 4; i++) {
+  //       sortedCells[i].sortOrder = i;
+  //       if (axis == "y")
+  //         sortedCells[i].y = i;
+  //       else
+  //         sortedCells[i].x = i;
+
+  //     }
+
+
+
+  //   });
+
+  //   this.setState({ boardValues: this.state.boardValues });
+  // }
 }
 
 const styles = StyleSheet.create({
