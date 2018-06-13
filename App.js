@@ -18,7 +18,7 @@ export default class App extends React.Component {
         },
         { x: 0, y: 1, value: 2 },
         { x: 1, y: 1, value: 0 },
-        { x: 2, y: 1, value: 0 },
+        { x: 2, y: 1, value: 1024 },
         { x: 3, y: 1, value: 4 },
         { x: 0, y: 2, value: 0 },
         { x: 1, y: 2, value: 4 },
