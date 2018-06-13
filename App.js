@@ -36,8 +36,8 @@ export default class App extends React.Component {
   render() {
 
     const config = {
-      velocityThreshold: 0.3,
-      directionalOffsetThreshold: 80
+      velocityThreshold: 0.1,
+      directionalOffsetThreshold: 70
     };
 
 
