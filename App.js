@@ -37,7 +37,7 @@ export default class App extends React.Component {
   render() {
 
     const config = {
-      velocityThreshold: 0.1,
+      velocityThreshold: 0.08,
       directionalOffsetThreshold: 70
     };
 
@@ -51,7 +51,10 @@ export default class App extends React.Component {
 
         <Board boardValues={this.state.boardValues} />
 
-        <Text>Total Score - {this.state.totalScore}</Text>
+        <Text>Total Score</Text>
+        <Text style={{ fontSize: 27 }}>{this.state.totalScore}</Text>
+        
+
         <Button
           onPress={() => this.onPressStart()}
           title="Start"
