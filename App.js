@@ -28,8 +28,9 @@ export default class App extends React.Component {
         { x: 1, y: 3, value: 0 },
         { x: 2, y: 3, value: 0 },
         { x: 3, y: 3, value: 2 }
-      ]
-    };
+      ],
+      totalScore : 0
+    }  ;
   }
 
 
@@ -49,11 +50,15 @@ export default class App extends React.Component {
 
 
         <Board boardValues={this.state.boardValues} />
+
+        <Text>Total Score - {this.state.totalScore}</Text>
         <Button
           onPress={() => this.onPressStart()}
           title="Start"
           color="#841584"
         />
+
+        
 
       </GestureRecognizer>
     );
@@ -107,7 +112,7 @@ export default class App extends React.Component {
   }
 
   makeMove(axis, direction) {
-
+    
     // make sure groups of cells is all in order
     let groupsOfCells = [];
     for (let j = 0; j < 4; j++) {
@@ -141,7 +146,7 @@ export default class App extends React.Component {
 
 
 
-    this.setState({ boardValues: this.state.boardValues });
+    this.setState({ boardValues: this.state.boardValues, totalScore : this.state.totalScore });
 
   }
 
@@ -162,6 +167,7 @@ export default class App extends React.Component {
         if (nextCell != null && currCell.value == nextCell.value) {
           currCell.value = currCell.value * 2;
           nextCell.value = 0;
+          this.state.totalScore = this.state.totalScore + currCell.value;
           
         }
         newOrderOfCells.push(currCell);
