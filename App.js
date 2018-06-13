@@ -124,60 +124,84 @@ export default class App extends React.Component {
 
     }
 
+    // for each group of cells, make sure it is ordered so that numbers come first, the ones zero come last
+    groupsOfCells.forEach(group => {
+
+      group = this.orderZeroCellsToEnd(group, direction, axis);
+            
+    });
+
+    // another pass, this time to check for merging
     groupsOfCells.forEach(group => {
 
       let newOrderOfCells = [];
       let zeroCells = [];
 
-      // if it is not, look at next one, if same, double this one, make the other one zero
+      // add all the non-zero cells, check if the next cell is the same, if so, set next cell to zero and double current cell
       for (let i = 0; i < 4; i++) {
         let currCell = group[i];
-
+        let nextCell = group.length > i + 1 ? group[i+1] : null;
+        
         if (currCell.value == 0) {
           // if it is a zero, move to the end
           zeroCells.push(currCell);
         }
         else {
-          newOrderOfCells.push(currCell);
+
+          if(nextCell != null && currCell.value == nextCell.value)
+          {
+            currCell.value = currCell.value * 2;
+            nextCell.value = 0;
+            newOrderOfCells.push(currCell);
+          }
+          
         }
 
       }
+      // after the non-zero cells are added, add the zero ones
       zeroCells.forEach(zCell => {
         newOrderOfCells.push(zCell);
       });
 
-      group = newOrderOfCells;
-
-      let newPosition = direction == "negative" ? 0 : 3;
-      let iterator = direction == "negative" ? 1 : -1;
-      let j = 0;
-
-      // for (let i = start; i >= 0 && i < 4; i = i + iterator) {
-      //   if (axis == "y")
-      //     newOrderOfCells[i].y = i;
-      //   else
-      //     newOrderOfCells[i].x = i;
-
-      //   j++;
-      // }
-
-      for (let i = 0; i < 4; i++) {
-        if (axis == "y")
-          newOrderOfCells[i].y = newPosition;
-        else
-          newOrderOfCells[i].x = newPosition;
-
-        newPosition = newPosition + iterator;
-      }
-      console.log('fdsa');
-      console.log(group);
-
-      this.setState({ boardValues: this.state.boardValues });
     });
+
+    this.setState({ boardValues: this.state.boardValues });
 
   }
 
 
+
+  orderZeroCellsToEnd(group, direction, axis) {
+    let newOrderOfCells = [];
+    let zeroCells = [];
+    // add all the non-zero cells 
+    for (let i = 0; i < 4; i++) {
+      let currCell = group[i];
+      if (currCell.value == 0) {
+        // if it is a zero, move to the end
+        zeroCells.push(currCell);
+      }
+      else {
+        newOrderOfCells.push(currCell);
+      }
+    }
+    // after the non-zero cells are added, add the zero ones
+    zeroCells.forEach(zCell => {
+      newOrderOfCells.push(zCell);
+    });
+    group = newOrderOfCells;
+    // sort the original cells to their new order
+    let newPosition = direction == "negative" ? 0 : 3;
+    let iterator = direction == "negative" ? 1 : -1;
+    for (let i = 0; i < 4; i++) {
+      if (axis == "y")
+        newOrderOfCells[i].y = newPosition;
+      else
+        newOrderOfCells[i].x = newPosition;
+      newPosition = newPosition + iterator;
+    }
+    return group;
+  }
   // makeMove(axis, direction) {
   //   let groupsOfCells = [];
   //   for (let j = 0; j < 4; j++) {
