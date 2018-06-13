@@ -34,10 +34,18 @@ export default class App extends React.Component {
 
 
   render() {
+
+    const config = {
+      velocityThreshold: 0.3,
+      directionalOffsetThreshold: 80
+    };
+
+
     return (
       <GestureRecognizer
         onSwipe={(direction, state) => this.onSwipe(direction, state)}
-        style={styles.container}>
+        style={styles.container}
+        config={config}>
 
 
         <Board boardValues={this.state.boardValues} />
@@ -104,10 +112,10 @@ export default class App extends React.Component {
     let groupsOfCells = [];
     for (let j = 0; j < 4; j++) {
       if (axis == "y") {
-        groupsOfCells[j] = this.state.boardValues.filter(c => c.x == j).sort((a,b) => a.y - b.y);
+        groupsOfCells[j] = this.state.boardValues.filter(c => c.x == j).sort((a, b) => a.y - b.y);
       }
       else {
-        groupsOfCells[j] = this.state.boardValues.filter(c => c.y == j).sort((a,b) => a.x - b.x);
+        groupsOfCells[j] = this.state.boardValues.filter(c => c.y == j).sort((a, b) => a.x - b.x);
       }
 
       if (direction == "positive") {
@@ -123,12 +131,14 @@ export default class App extends React.Component {
 
       // if it is not, look at next one, if same, double this one, make the other one zero
       for (let i = 0; i < 4; i++) {
-        if (group[i].value == 0) {
+        let currCell = group[i];
+
+        if (currCell.value == 0) {
           // if it is a zero, move to the end
-          zeroCells.push(group[i]);
+          zeroCells.push(currCell);
         }
         else {
-          newOrderOfCells.push(group[i]);
+          newOrderOfCells.push(currCell);
         }
 
       }
@@ -157,7 +167,7 @@ export default class App extends React.Component {
         else
           newOrderOfCells[i].x = newPosition;
 
-          newPosition = newPosition + iterator;
+        newPosition = newPosition + iterator;
       }
       console.log('fdsa');
       console.log(group);
@@ -217,13 +227,13 @@ export default class App extends React.Component {
 
   //   this.setState({ boardValues: this.state.boardValues });
   // }
-  }
+}
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+});
