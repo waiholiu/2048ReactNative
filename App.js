@@ -126,50 +126,51 @@ export default class App extends React.Component {
 
     // for each group of cells, make sure it is ordered so that numbers come first, the ones zero come last
     groupsOfCells.forEach(group => {
-
-      group = this.orderZeroCellsToEnd(group, direction, axis);
-            
+      group = this.orderZeroCellsToEnd(group, direction, axis);    
     });
 
     // another pass, this time to check for merging
     groupsOfCells.forEach(group => {
-
-      let newOrderOfCells = [];
-      let zeroCells = [];
-
-      // add all the non-zero cells, check if the next cell is the same, if so, set next cell to zero and double current cell
-      for (let i = 0; i < 4; i++) {
-        let currCell = group[i];
-        let nextCell = group.length > i + 1 ? group[i+1] : null;
-        
-        if (currCell.value == 0) {
-          // if it is a zero, move to the end
-          zeroCells.push(currCell);
-        }
-        else {
-
-          if(nextCell != null && currCell.value == nextCell.value)
-          {
-            currCell.value = currCell.value * 2;
-            nextCell.value = 0;
-            newOrderOfCells.push(currCell);
-          }
-          
-        }
-
-      }
-      // after the non-zero cells are added, add the zero ones
-      zeroCells.forEach(zCell => {
-        newOrderOfCells.push(zCell);
-      });
-
+      this.mergeSameNumberCells(group);
     });
+
+    // pick a random zero and make it a 2
+    let zeroCells = this.state.boardValues.filter(c => c.value == 0);
+    let randomNo = Math.floor(Math.random() * zeroCells.length) + 1 ;
+    zeroCells[randomNo].value = 2;
+    
+
 
     this.setState({ boardValues: this.state.boardValues });
 
   }
 
 
+
+  mergeSameNumberCells(group) {
+    let newOrderOfCells = [];
+    let zeroCells = [];
+    // add all the non-zero cells, check if the next cell is the same, if so, set next cell to zero and double current cell
+    for (let i = 0; i < 4; i++) {
+      let currCell = group[i];
+      let nextCell = group.length > i + 1 ? group[i + 1] : null;
+      if (currCell.value == 0) {
+        // if it is a zero, move to the end
+        zeroCells.push(currCell);
+      }
+      else {
+        if (nextCell != null && currCell.value == nextCell.value) {
+          currCell.value = currCell.value * 2;
+          nextCell.value = 0;
+          newOrderOfCells.push(currCell);
+        }
+      }
+    }
+    // after the non-zero cells are added, add the zero ones
+    zeroCells.forEach(zCell => {
+      newOrderOfCells.push(zCell);
+    });
+  }
 
   orderZeroCellsToEnd(group, direction, axis) {
     let newOrderOfCells = [];
