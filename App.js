@@ -9,26 +9,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      boardValues: [
-        { x: 0, y: 0, value: 0 },
-        { x: 1, y: 0, value: 0 },
-        { x: 2, y: 0, value: 0 },
-        {
-          x: 3, y: 0, value: 2
-        },
-        { x: 0, y: 1, value: 2 },
-        { x: 1, y: 1, value: 0 },
-        { x: 2, y: 1, value: 1024 },
-        { x: 3, y: 1, value: 4 },
-        { x: 0, y: 2, value: 0 },
-        { x: 1, y: 2, value: 4 },
-        { x: 2, y: 2, value: 0 },
-        { x: 3, y: 2, value: 0 },
-        { x: 0, y: 3, value: 4 },
-        { x: 1, y: 3, value: 0 },
-        { x: 2, y: 3, value: 0 },
-        { x: 3, y: 3, value: 2 }
-      ],
+      boardValues: this.generateNewBoard(),
       totalScore : 0
     }  ;
   }
@@ -47,7 +28,6 @@ export default class App extends React.Component {
         onSwipe={(direction, state) => this.onSwipe(direction, state)}
         style={styles.container}
         config={config}>
-
 
         <Board boardValues={this.state.boardValues} />
 
@@ -72,31 +52,43 @@ export default class App extends React.Component {
   }
 
   resetBoard() {
+    let boardValues = this.generateNewBoard();
+
     this.setState({
-      boardValues: [
-        { x: 0, y: 0, value: 4 },
-        { x: 1, y: 0, value: 4 },
-        { x: 2, y: 0, value: 2 },
-        { x: 3, y: 0, value: 2 },
-        { x: 0, y: 1, value: 2 },
-        { x: 1, y: 1, value: 0 },
-        { x: 2, y: 1, value: 0 },
-        { x: 3, y: 1, value: 4 },
-        { x: 0, y: 2, value: 0 },
-        { x: 1, y: 2, value: 4 },
-        { x: 2, y: 2, value: 0 },
-        { x: 3, y: 2, value: 0 },
-        { x: 0, y: 3, value: 4 },
-        { x: 1, y: 3, value: 0 },
-        { x: 2, y: 3, value: 0 },
-        { x: 3, y: 3, value: 2 }
-      ]
+      boardValues: boardValues,
+      totalScore : 0
     });
+
+  }
+
+  generateNewBoard() {
+    let boardValues = [
+      { x: 0, y: 0, value: 0 },
+      { x: 1, y: 0, value: 0 },
+      { x: 2, y: 0, value: 0 },
+      {
+        x: 3, y: 0, value: 0
+      },
+      { x: 0, y: 1, value: 0 },
+      { x: 1, y: 1, value: 0 },
+      { x: 2, y: 1, value: 0 },
+      { x: 3, y: 1, value: 0 },
+      { x: 0, y: 2, value: 0 },
+      { x: 1, y: 2, value: 0 },
+      { x: 2, y: 2, value: 0 },
+      { x: 3, y: 2, value: 0 },
+      { x: 0, y: 3, value: 0 },
+      { x: 1, y: 3, value: 0 },
+      { x: 2, y: 3, value: 0 },
+      { x: 3, y: 3, value: 0 }
+    ];
+    let randomNo = Math.floor(Math.random() * 16);
+    boardValues[randomNo].value = 2;
+    return boardValues;
   }
 
   onSwipe(gestureName, gestureState) {
     const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
-    console.log('swipe3');
     this.setState({ gestureName: gestureName });
     switch (gestureName) {
       case SWIPE_UP:
@@ -143,9 +135,7 @@ export default class App extends React.Component {
     });
 
     // pick a random zero and make it a 2
-    let zeroCells = this.state.boardValues.filter(c => c.value == 0);
-    let randomNo = Math.floor(Math.random() * zeroCells.length);
-    zeroCells[randomNo].value = 2;
+    this.createNewCell();
 
 
 
@@ -154,6 +144,12 @@ export default class App extends React.Component {
   }
 
 
+
+  createNewCell() {
+    let zeroCells = this.state.boardValues.filter(c => c.value == 0);
+    let randomNo = Math.floor(Math.random() * zeroCells.length);
+    zeroCells[randomNo].value = 2;
+  }
 
   mergeSameNumberCells(group,direction, axis) {
     let newOrderOfCells = [];
@@ -226,55 +222,7 @@ export default class App extends React.Component {
     }
     return group;
   }
-  // makeMove(axis, direction) {
-  //   let groupsOfCells = [];
-  //   for (let j = 0; j < 4; j++) {
-  //     if (axis == "y") {
-  //       groupsOfCells[j] = this.state.boardValues.filter(c => c.x == j);
-  //     }
-  //     else {
-  //       groupsOfCells[j] = this.state.boardValues.filter(c => c.y == j);
-  //     }
-
-  //     groupsOfCells[j].sortOrder = j;
-  //   }
-
-
-  //   groupsOfCells.forEach(group => {
-
-  //     let sortFunction = function (a, b) {
-
-  //       let sortOrder = direction == "positive" ? 1 : -1;
-  //       if (a.value == 0)
-  //         return -1 * sortOrder;
-  //       if (b.value == 0)
-  //         return 1 * sortOrder;
-  //       if (axis == "x")
-  //         return (a.x - b.x);
-  //       else
-  //         return (a.y - b.y);
-
-  //     }
-
-  //     let sortedCells = group.sort((a, b) => sortFunction(a, b));
-
-
-
-  //     for (let i = 0; i < 4; i++) {
-  //       sortedCells[i].sortOrder = i;
-  //       if (axis == "y")
-  //         sortedCells[i].y = i;
-  //       else
-  //         sortedCells[i].x = i;
-
-  //     }
-
-
-
-  //   });
-
-  //   this.setState({ boardValues: this.state.boardValues });
-  // }
+  
 }
 
 const styles = StyleSheet.create({
