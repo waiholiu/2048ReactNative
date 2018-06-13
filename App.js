@@ -80,7 +80,7 @@ export default class App extends React.Component {
 
   onSwipe(gestureName, gestureState) {
     const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
-    console.log('swipe2');
+    console.log('swipe3');
     this.setState({ gestureName: gestureName });
     switch (gestureName) {
       case SWIPE_UP:
@@ -104,53 +104,67 @@ export default class App extends React.Component {
     let groupsOfCells = [];
     for (let j = 0; j < 4; j++) {
       if (axis == "y") {
-        groupsOfCells[j] = this.state.boardValues.filter(c => c.x == j);
+        groupsOfCells[j] = this.state.boardValues.filter(c => c.x == j).sort((a,b) => a.y - b.y);
       }
       else {
-        groupsOfCells[j] = this.state.boardValues.filter(c => c.y == j);
+        groupsOfCells[j] = this.state.boardValues.filter(c => c.y == j).sort((a,b) => a.x - b.x);
       }
 
-      if(direction == "negative")
-      {
+      if (direction == "positive") {
         groupsOfCells[j] = groupsOfCells[j].reverse();
       }
-    }
 
+    }
 
     groupsOfCells.forEach(group => {
 
-      let sortFunction = function (a, b) {
-        
-        let sortOrder = direction == "positive" ? 1 : -1;
-        if (a.value == 0)
-          return -1 * sortOrder;
-        if (b.value == 0)
-          return 1 * sortOrder;
-        if (axis == "x")
-          return (a.x - b.x);
-        else
-          return (a.y - b.y);
+      let newOrderOfCells = [];
+      let zeroCells = [];
+
+      // if it is not, look at next one, if same, double this one, make the other one zero
+      for (let i = 0; i < 4; i++) {
+        if (group[i].value == 0) {
+          // if it is a zero, move to the end
+          zeroCells.push(group[i]);
+        }
+        else {
+          newOrderOfCells.push(group[i]);
+        }
 
       }
+      zeroCells.forEach(zCell => {
+        newOrderOfCells.push(zCell);
+      });
 
-      let sortedCells = group.sort((a, b) => sortFunction(a, b));
+      group = newOrderOfCells;
 
+      let newPosition = direction == "negative" ? 0 : 3;
+      let iterator = direction == "negative" ? 1 : -1;
+      let j = 0;
 
+      // for (let i = start; i >= 0 && i < 4; i = i + iterator) {
+      //   if (axis == "y")
+      //     newOrderOfCells[i].y = i;
+      //   else
+      //     newOrderOfCells[i].x = i;
+
+      //   j++;
+      // }
 
       for (let i = 0; i < 4; i++) {
-        sortedCells[i].sortOrder = i;
         if (axis == "y")
-          sortedCells[i].y = i;
+          newOrderOfCells[i].y = newPosition;
         else
-          sortedCells[i].x = i;
+          newOrderOfCells[i].x = newPosition;
 
+          newPosition = newPosition + iterator;
       }
+      console.log('fdsa');
+      console.log(group);
 
-
-
+      this.setState({ boardValues: this.state.boardValues });
     });
 
-    this.setState({ boardValues: this.state.boardValues });
   }
 
 
@@ -171,7 +185,7 @@ export default class App extends React.Component {
   //   groupsOfCells.forEach(group => {
 
   //     let sortFunction = function (a, b) {
-        
+
   //       let sortOrder = direction == "positive" ? 1 : -1;
   //       if (a.value == 0)
   //         return -1 * sortOrder;
@@ -203,13 +217,13 @@ export default class App extends React.Component {
 
   //   this.setState({ boardValues: this.state.boardValues });
   // }
-}
+  }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-});
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#fff',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+  });
