@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableWithoutFeedback } from 'react-native';
 import Board from './src/board';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+import * as Animatable from 'react-native-animatable';
 
 
 export default class App extends React.Component {
@@ -10,8 +11,27 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       boardValues: this.generateNewBoard(),
-      totalScore : 0
-    }  ;
+      totalScore: 0
+    };
+
+    Animatable.initializeRegistryWithDefinitions({
+      myFancyAnimation:
+      {
+        0: {
+          opacity: 0,
+          scale: 0,
+        },
+        0.5: {
+          opacity: 1,
+          scale: 0.3,
+        },
+        1: {
+          opacity: 1,
+          scale: 1,
+        },
+
+      }
+    });
   }
 
 
@@ -32,22 +52,24 @@ export default class App extends React.Component {
         <Board boardValues={this.state.boardValues} />
 
         <Text>Total Score</Text>
-        <Text style={{ fontSize: 27 }}>{this.state.totalScore}</Text>
-        
+        <Animatable.Text ref={ref => this.avTotalScore = ref} style={{ fontSize: 27 }} >{this.state.totalScore}</Animatable.Text>
 
-        <Button
-          onPress={() => this.onPressStart()}
-          title="Start"
-          color="#841584"
-        />
 
-        
+        <Animatable.View ref={ref => this.avResetButton = ref}>
+          <Button
+            onPress={() => this.onPressReset()}
+            title="Reset"
+            color="#841584"
+            style={{ padding: 500 }}
+          />
+        </Animatable.View>
 
       </GestureRecognizer>
     );
   }
 
-  onPressStart() {
+  onPressReset() {
+    this.avResetButton.jello();
     this.resetBoard();
   }
 
@@ -56,8 +78,11 @@ export default class App extends React.Component {
 
     this.setState({
       boardValues: boardValues,
-      totalScore : 0
+      totalScore: 0
     });
+
+    // this.avTotalScore.lightSpeedIn(500).then(() => { this.avTotalScore.bounce(500) });
+    this.avTotalScore.lightSpeedIn();
 
   }
 
@@ -107,7 +132,7 @@ export default class App extends React.Component {
   }
 
   makeMove(axis, direction) {
-    
+
     // make sure groups of cells is all in order
     let groupsOfCells = [];
     for (let j = 0; j < 4; j++) {
@@ -131,16 +156,15 @@ export default class App extends React.Component {
 
     // another pass, this time to check for merging
     groupsOfCells.forEach((group, index, array) => {
-      array[index] = this.mergeSameNumberCells(group,direction, axis);
+      array[index] = this.mergeSameNumberCells(group, direction, axis);
     });
 
     // pick a random zero and make it a 2
     this.createNewCell();
 
-
-
-    this.setState({ boardValues: this.state.boardValues, totalScore : this.state.totalScore });
-
+    this.setState({ boardValues: this.state.boardValues, totalScore: this.state.totalScore });
+    
+    this.avTotalScore.myFancyAnimation();
   }
 
 
@@ -151,7 +175,7 @@ export default class App extends React.Component {
     zeroCells[randomNo].value = 2;
   }
 
-  mergeSameNumberCells(group,direction, axis) {
+  mergeSameNumberCells(group, direction, axis) {
     let newOrderOfCells = [];
     let zeroCells = [];
     // add all the non-zero cells, check if the next cell is the same, if so, set next cell to zero and double current cell
@@ -167,7 +191,7 @@ export default class App extends React.Component {
           currCell.value = currCell.value * 2;
           nextCell.value = 0;
           this.state.totalScore = this.state.totalScore + currCell.value;
-          
+
         }
         newOrderOfCells.push(currCell);
       }
@@ -222,7 +246,7 @@ export default class App extends React.Component {
     }
     return group;
   }
-  
+
 }
 
 const styles = StyleSheet.create({
