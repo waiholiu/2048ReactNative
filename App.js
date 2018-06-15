@@ -66,7 +66,7 @@ export default class App extends React.Component {
     });
 
     // this.avTotalScore.lightSpeedIn(500).then(() => { this.avTotalScore.bounce(500) });
-    this.avTotalScore.bounce();
+    this.avTotalScore.bounceInRight(200);
 
   }
 
@@ -93,6 +93,7 @@ export default class App extends React.Component {
     ];
     let randomNo = Math.floor(Math.random() * 16);
     boardValues[randomNo].value = 2;
+    boardValues[randomNo].isNew = true;
     return boardValues;
   }
 
@@ -116,6 +117,17 @@ export default class App extends React.Component {
   }
 
   makeMove(axis, direction) {
+
+    let originalScore = this.state.totalScore;
+
+    // remember what their original positions were
+    this.state.boardValues.forEach((cell) => {
+      cell.originalX = cell.x,
+      cell.originalY = cell.y,
+      cell.isMerged = null,
+      cell.isNew = null
+    })
+
 
     // make sure groups of cells is all in order
     let groupsOfCells = [];
@@ -146,9 +158,14 @@ export default class App extends React.Component {
     // pick a random zero and make it a 2
     this.createNewCell();
 
+    
+
     this.setState({ boardValues: this.state.boardValues, totalScore: this.state.totalScore });
     
-    this.avTotalScore.bounce();
+    if(originalScore != this.state.totalScore)
+    {
+      this.avTotalScore.bounce(200);
+    }
   }
 
 

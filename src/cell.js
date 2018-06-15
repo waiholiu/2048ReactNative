@@ -83,24 +83,56 @@ class Cell extends Component {
     // this bit is for all my animations
     componentDidUpdate(prevProps, prevState) {
 
+        // console.log(this.props.obj.x);
+        // console.log(this.props.obj.y);
         if (this.props.obj.isNew) {
-            this.avCell.generateNewCell(200);
-            this.props.obj.isNew = null;
+            
+            this.avCell.shake(1000);
+            return;
         }
 
-        if(this.props.obj.isMerged){
+        if (this.props.obj.isMerged) {
             this.avCell.bounceIn();
-            this.props.obj.isMerged = null;
         }
+        else {
+            if (this.props.obj.value != 0) {
+                console.log('here');
+                console.log(this.props.obj.x);
+                console.log(this.props.obj.y);
+                console.log(this.props.obj.value);
+                // if (this.props.obj.originalX < this.props.obj.x) {
+
+                //     this.avCell.bounceInLeft();
+                // }
+                // if (this.props.obj.originalX > this.props.obj.x) {
+
+                //     this.avCell.bounceInRight();
+                // }
+
+                let diffY = (this.props.obj.originalY - this.props.obj.y) * 80;
+                let diffX = (this.props.obj.originalX - this.props.obj.x) * 80;
+
+                this.avCell.transition({ translateX: diffX, translateY: diffY, opacity: 0 }, { translateX: 0, translateY: 0, opacity: 1, }, 300);
+
+                // if (diffX != 0) {
+                //     this.avCell.transition({ translateX: diffX, opacity: 0 }, { translateX: 0, opacity: 1, }, 300);
+                // }
+                // if (diffY != 0) {
+                //     this.avCell.transition({ translateY: diffY, opacity: 0 }, { translateY: 0, opacity: 1, }, 300);
+                // }
+            }
+
+        }
+
     }
+
 
     render() {
 
-        console.log(this.props.obj);
 
         return (
             <Animatable.View style={this.viewStyle()} ref={ref => this.avCell = ref}  >
-                {this.props.obj.value != -90 ? <Text style={this.cellColor()}>{this.props.obj.value}</Text> : null}
+                {<Text style={this.cellColor()}>{this.props.obj.value}</Text>}
             </Animatable.View>
         );
     }
