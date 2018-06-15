@@ -76,9 +76,6 @@ class Cell extends Component {
             color: 'white'
         }
 
-        if (this.props.obj.isNew) {
-            cssClass.color = 'black';
-        }
         return cssClass;
     }
 

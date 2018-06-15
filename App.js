@@ -121,7 +121,7 @@ export default class App extends React.Component {
   makeMove(axis, direction) {
 
     let originalScore = this.state.totalScore;
-    let originalPositions = this.state.boardValues.map(cell => { return { x: cell.x, y: cell.y, value: cell.value}});
+    let originalPositions = this.state.boardValues.map(cell => { return { x: cell.x, y: cell.y, value: cell.value } });
 
     // remember what their original positions were
     this.state.boardValues.forEach((cell) => {
@@ -178,9 +178,12 @@ export default class App extends React.Component {
 
   createNewCell() {
     let zeroCells = this.state.boardValues.filter(c => c.value == 0);
-    let randomNo = Math.floor(Math.random() * zeroCells.length);
-    zeroCells[randomNo].value = 2;
-    zeroCells[randomNo].isNew = true;
+
+    if (zeroCells.length > 0) {
+      let randomNo = Math.floor(Math.random() * zeroCells.length);
+      zeroCells[randomNo].value = 2;
+      zeroCells[randomNo].isNew = true;
+    }
   }
 
   mergeSameNumberCells(group, direction, axis) {
