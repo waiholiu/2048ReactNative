@@ -91,6 +91,8 @@ export default class App extends React.Component {
       { x: 2, y: 3, value: 0 },
       { x: 3, y: 3, value: 0 }
     ];
+
+    // let boardValues = [{ "x": 1, "y": 2, "value": 32, "originalX": 1, "originalY": 2, "isMerged": null, "isNew": null }, { "x": 2, "y": 2, "value": 4, "originalX": 2, "originalY": 2, "isMerged": null, "isNew": null }, { "x": 3, "y": 2, "value": 2, "originalX": 3, "originalY": 2, "isMerged": null, "isNew": null }, { "x": 0, "y": 3, "value": 0, "originalX": 2, "originalY": 3, "isMerged": null, "isNew": null }, { "x": 1, "y": 0, "value": 2, "originalX": 0, "originalY": 0, "isMerged": null, "isNew": null }, { "x": 1, "y": 1, "value": 2, "originalX": 0, "originalY": 1, "isMerged": null, "isNew": null }, { "x": 3, "y": 1, "value": 2, "isNew": null, "originalX": 2, "originalY": 1, "isMerged": null }, { "x": 2, "y": 3, "value": 8, "originalX": 1, "originalY": 3, "isMerged": null, "isNew": null }, { "x": 2, "y": 0, "value": 8, "originalX": 1, "originalY": 0, "isMerged": null, "isNew": null }, { "x": 0, "y": 1, "value": 0, "originalX": 3, "originalY": 1, "isMerged": null, "isNew": null }, { "x": 1, "y": 3, "value": 2, "originalX": 0, "originalY": 3, "isMerged": null, "isNew": null }, { "x": 3, "y": 0, "value": 2, "originalX": 2, "originalY": 0, "isMerged": null, "isNew": null }, { "x": 0, "y": 2, "value": 8, "originalX": 0, "originalY": 2, "isMerged": null, "isNew": null }, { "x": 2, "y": 1, "value": 8, "originalX": 1, "originalY": 1, "isMerged": null, "isNew": null }, { "x": 0, "y": 0, "value": 2, "originalX": 3, "originalY": 0, "isMerged": null, "isNew": true }, { "x": 3, "y": 3, "value": 4, "originalX": 3, "originalY": 3, "isMerged": true, "isNew": null }]
     let randomNo = Math.floor(Math.random() * 16);
     boardValues[randomNo].value = 2;
     boardValues[randomNo].isNew = true;
@@ -123,9 +125,9 @@ export default class App extends React.Component {
     // remember what their original positions were
     this.state.boardValues.forEach((cell) => {
       cell.originalX = cell.x,
-      cell.originalY = cell.y,
-      cell.isMerged = null,
-      cell.isNew = null
+        cell.originalY = cell.y,
+        cell.isMerged = null,
+        cell.isNew = null
     })
 
 
@@ -158,14 +160,15 @@ export default class App extends React.Component {
     // pick a random zero and make it a 2
     this.createNewCell();
 
-    
+
 
     this.setState({ boardValues: this.state.boardValues, totalScore: this.state.totalScore });
-    
-    if(originalScore != this.state.totalScore)
-    {
+
+    if (originalScore != this.state.totalScore) {
       this.avTotalScore.bounce(200);
     }
+
+    console.log(this.state.boardValues);
   }
 
 

@@ -76,6 +76,9 @@ class Cell extends Component {
             color: 'white'
         }
 
+        if (this.props.obj.isNew) {
+            cssClass.color = 'black';
+        }
         return cssClass;
     }
 
@@ -83,46 +86,41 @@ class Cell extends Component {
     // this bit is for all my animations
     componentDidUpdate(prevProps, prevState) {
 
-        // console.log(this.props.obj.x);
-        // console.log(this.props.obj.y);
-        if (this.props.obj.isNew) {
-            
-            this.avCell.shake(1000);
-            return;
-        }
+        this.avCell.stopAnimation();
+        if (this.props.obj.value != 0) {
 
-        if (this.props.obj.isMerged) {
-            this.avCell.bounceIn();
-        }
-        else {
-            if (this.props.obj.value != 0) {
-                console.log('here');
-                console.log(this.props.obj.x);
-                console.log(this.props.obj.y);
-                console.log(this.props.obj.value);
-                // if (this.props.obj.originalX < this.props.obj.x) {
 
-                //     this.avCell.bounceInLeft();
-                // }
-                // if (this.props.obj.originalX > this.props.obj.x) {
+            let diffY = (this.props.obj.originalY - this.props.obj.y) * 80;
+            let diffX = (this.props.obj.originalX - this.props.obj.x) * 80;
 
-                //     this.avCell.bounceInRight();
-                // }
-
-                let diffY = (this.props.obj.originalY - this.props.obj.y) * 80;
-                let diffX = (this.props.obj.originalX - this.props.obj.x) * 80;
-
-                this.avCell.transition({ translateX: diffX, translateY: diffY, opacity: 0 }, { translateX: 0, translateY: 0, opacity: 1, }, 300);
-
-                // if (diffX != 0) {
-                //     this.avCell.transition({ translateX: diffX, opacity: 0 }, { translateX: 0, opacity: 1, }, 300);
-                // }
-                // if (diffY != 0) {
-                //     this.avCell.transition({ translateY: diffY, opacity: 0 }, { translateY: 0, opacity: 1, }, 300);
-                // }
+            if (this.props.obj.isNew) {
+                this.avCell.generateNewCell();
+                return;
             }
 
+            if (this.props.obj.isMerged) {
+
+                this.avCell.wobble();
+                return;
+            }
+
+            // this.avCell.jello();
+            this.avCell.animate({
+                0: {
+                    translateX: diffX, translateY: diffY, opacity: 1
+                },
+                1: {
+                    translateX: 0, translateY: 0, opacity: 1
+                }
+            }, 150);
+
+            // this.avCell.transition
+            //     ({ translateX: diffX, translateY: diffY, opacity: 1 }, { translateX: 0, translateY: 0, opacity: 1, }, 300);
+
+
         }
+
+
 
     }
 
@@ -132,7 +130,9 @@ class Cell extends Component {
 
         return (
             <Animatable.View style={this.viewStyle()} ref={ref => this.avCell = ref}  >
-                {<Text style={this.cellColor()}>{this.props.obj.value}</Text>}
+                <Text style={this.cellColor()}>{this.props.obj.value}</Text>
+                
+
             </Animatable.View>
         );
     }
