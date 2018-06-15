@@ -36,15 +36,15 @@ export default class App extends React.Component {
         <Board boardValues={this.state.boardValues} />
 
         <Text>Total Score</Text>
-        <Animatable.Text ref={ref => this.avTotalScore = ref} style={{ fontSize: 27 }} >{this.state.totalScore}</Animatable.Text>
+        <Animatable.Text ref={ref => this.avTotalScore = ref} style={{ fontSize: 44 }} >{this.state.totalScore}</Animatable.Text>
 
 
-        <Animatable.View ref={ref => this.avResetButton = ref}>
+        <Animatable.View ref={ref => this.avResetButton = ref} style={{  marginBottom:40 }}>
           <Button
             onPress={() => this.onPressReset()}
             title="Reset"
             color="#841584"
-            style={{ padding: 500 }}
+            
           />
         </Animatable.View>
 
@@ -101,7 +101,7 @@ export default class App extends React.Component {
 
   onSwipe(gestureName, gestureState) {
     const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
-    this.setState({ gestureName: gestureName });
+    // this.setState({ gestureName: gestureName });
     switch (gestureName) {
       case SWIPE_UP:
         this.makeMove("y", "negative");
