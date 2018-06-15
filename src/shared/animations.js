@@ -4,7 +4,7 @@ function loadAnimations()
 {
 
     Animatable.initializeRegistryWithDefinitions({
-        refreshScore:
+        generateNewCell:
         {
           0: {
             opacity: 0,

@@ -66,7 +66,7 @@ export default class App extends React.Component {
     });
 
     // this.avTotalScore.lightSpeedIn(500).then(() => { this.avTotalScore.bounce(500) });
-    this.avTotalScore.refreshScore(400);
+    this.avTotalScore.bounce();
 
   }
 
@@ -148,7 +148,7 @@ export default class App extends React.Component {
 
     this.setState({ boardValues: this.state.boardValues, totalScore: this.state.totalScore });
     
-    this.avTotalScore.refreshScore(400);
+    this.avTotalScore.bounce();
   }
 
 
@@ -157,6 +157,7 @@ export default class App extends React.Component {
     let zeroCells = this.state.boardValues.filter(c => c.value == 0);
     let randomNo = Math.floor(Math.random() * zeroCells.length);
     zeroCells[randomNo].value = 2;
+    zeroCells[randomNo].isNew = true;
   }
 
   mergeSameNumberCells(group, direction, axis) {

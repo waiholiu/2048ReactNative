@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 class Cell extends Component {
     state = {}
@@ -14,7 +15,7 @@ class Cell extends Component {
             height: 80
         }
 
-        switch (this.props.text) {
+        switch (this.props.obj.value) {
             case 2:
                 cssClass.backgroundColor = '#d37c14'
                 break;
@@ -72,19 +73,28 @@ class Cell extends Component {
         let cssClass = {
             fontSize: 27,
             textAlign: "center",
-            color:'white'
+            color: 'white'
         }
 
         return cssClass;
     }
 
+    componentDidUpdate(prevProps, prevState) {
+
+        if (this.props.obj.isNew) {
+            this.avCell.generateNewCell(200);
+            this.props.obj.isNew = null;
+        }
+    }
 
     render() {
 
+        console.log(this.props.obj);
+
         return (
-            <View style={this.viewStyle()} >
-                {this.props.text != -90 ? <Text style={this.cellColor()}>{this.props.text}</Text> : null}
-            </View>
+            <Animatable.View style={this.viewStyle()} ref={ref => this.avCell = ref}  >
+                {this.props.obj.value != -90 ? <Text style={this.cellColor()}>{this.props.obj.value}</Text> : null}
+            </Animatable.View>
         );
     }
 }
