@@ -60,6 +60,31 @@ class Cell extends Component {
                 cssClass.backgroundColor = '#674100'
                 break;
 
+            case 4096:
+                cssClass.backgroundColor = '#074b07'
+                break;
+
+            case 8192:
+                cssClass.backgroundColor = '#be4c91'
+                break;
+
+            case 16384:
+                cssClass.backgroundColor = '#8a1d23'
+                break;
+
+            case 32768:
+                cssClass.backgroundColor = '#0e5382'
+                break;
+
+            case 65536:
+                cssClass.backgroundColor = '#674100'
+                break;
+
+            case 131072:
+                cssClass.backgroundColor = '#674100'
+                break;
+
+
             default:
                 break;
         }
