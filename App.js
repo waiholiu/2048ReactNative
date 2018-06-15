@@ -174,6 +174,7 @@ export default class App extends React.Component {
       else {
         if (nextCell != null && currCell.value == nextCell.value) {
           currCell.value = currCell.value * 2;
+          currCell.isMerged = true;
           nextCell.value = 0;
           this.state.totalScore = this.state.totalScore + currCell.value;
 

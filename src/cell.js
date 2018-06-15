@@ -79,11 +79,18 @@ class Cell extends Component {
         return cssClass;
     }
 
+
+    // this bit is for all my animations
     componentDidUpdate(prevProps, prevState) {
 
         if (this.props.obj.isNew) {
             this.avCell.generateNewCell(200);
             this.props.obj.isNew = null;
+        }
+
+        if(this.props.obj.isMerged){
+            this.avCell.bounceIn();
+            this.props.obj.isMerged = null;
         }
     }
 
