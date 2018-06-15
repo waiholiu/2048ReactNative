@@ -158,6 +158,8 @@ export default class App extends React.Component {
       array[index] = this.mergeSameNumberCells(group, direction, axis);
     });
 
+
+    // should only generate a new cell if things change
     let hasChanged = originalPositions.some((oc) => oc.value != this.state.boardValues.find((nc) => nc.x == oc.x && nc.y == oc.y).value);
 
     if (hasChanged) {
