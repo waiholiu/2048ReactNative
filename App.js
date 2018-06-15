@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, TouchableWithoutFeedback } from 'react-
 import Board from './src/board';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import * as Animatable from 'react-native-animatable';
+import loadAnimations from './src/shared/animations';
 
 
 export default class App extends React.Component {
@@ -14,24 +15,7 @@ export default class App extends React.Component {
       totalScore: 0
     };
 
-    Animatable.initializeRegistryWithDefinitions({
-      myFancyAnimation:
-      {
-        0: {
-          opacity: 0,
-          scale: 0,
-        },
-        0.5: {
-          opacity: 1,
-          scale: 0.3,
-        },
-        1: {
-          opacity: 1,
-          scale: 1,
-        },
-
-      }
-    });
+    loadAnimations();
   }
 
 
@@ -82,7 +66,7 @@ export default class App extends React.Component {
     });
 
     // this.avTotalScore.lightSpeedIn(500).then(() => { this.avTotalScore.bounce(500) });
-    this.avTotalScore.lightSpeedIn();
+    this.avTotalScore.refreshScore(400);
 
   }
 
@@ -164,7 +148,7 @@ export default class App extends React.Component {
 
     this.setState({ boardValues: this.state.boardValues, totalScore: this.state.totalScore });
     
-    this.avTotalScore.myFancyAnimation();
+    this.avTotalScore.refreshScore(400);
   }
 
 
