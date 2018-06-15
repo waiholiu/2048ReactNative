@@ -94,7 +94,7 @@ class Cell extends Component {
             let diffX = (this.props.obj.originalX - this.props.obj.x) * 80;
 
             if (this.props.obj.isNew) {
-                this.avCell.generateNewCell();
+                this.avCell.generateNewCell(200);
                 return;
             }
 
@@ -112,7 +112,7 @@ class Cell extends Component {
                 1: {
                     translateX: 0, translateY: 0, opacity: 1
                 }
-            }, 150);
+            }, 75);
 
             // this.avCell.transition
             //     ({ translateX: diffX, translateY: diffY, opacity: 1 }, { translateX: 0, translateY: 0, opacity: 1, }, 300);

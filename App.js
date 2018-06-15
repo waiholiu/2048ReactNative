@@ -22,7 +22,7 @@ export default class App extends React.Component {
   render() {
 
     const config = {
-      velocityThreshold: 0.08,
+      velocityThreshold: 0.2,
       directionalOffsetThreshold: 70
     };
 
